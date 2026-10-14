@@ -5,7 +5,7 @@ void main() {
 }
 
 class WorkRadarApp extends StatelessWidget {
-  const WorkRadarApp({super.key});
+  const WorkRadarApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class WorkRadarApp extends StatelessWidget {
 }
 
 class RadarHomeScreen extends StatefulWidget {
-  const RadarHomeScreen({super.key});
+  const RadarHomeScreen({Key? key}) : super(key: key);
 
   @override
   State<RadarHomeScreen> createState() => _RadarHomeScreenState();
@@ -75,7 +75,6 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.deepPurpleAccent,
-        unselectedItemColor: Colors.grey,
         onTap: (index) {
           setState(() {
             _selectedIndex = index;
@@ -88,7 +87,7 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.work_outline),
-            label: 'الفرص المكتشفة',
+            label: 'الورشة',
           ),
         ],
       ),
@@ -96,58 +95,14 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
   }
 
   Widget _buildRadarTab() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.radar,
-            size: 100,
-            color: Colors.deepPurpleAccent,
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            '🚀 رادار البحث الآلي شغال',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'تطبيقك الذكي لرصد فرص العمل الحر وإنشاء المحتوى تلقائياً.',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton.icon(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('جاري فحص المنصات ورصد أحدث الوظائف... 🔍'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
-            icon: const Icon(Icons.search),
-            label: const Text('بدء المسح الآن'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              textStyle: const TextStyle(fontSize: 18),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildJobsTab() {
     return ListView.builder(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12.0),
       itemCount: _jobs.length,
       itemBuilder: (context, index) {
         final job = _jobs[index];
         return Card(
+          elevation: 2,
           margin: const EdgeInsets.symmetric(vertical: 8),
-          elevation: 3,
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.deepPurple,
@@ -167,6 +122,15 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildJobsTab() {
+    return const Center(
+      child: Text(
+        'قسم الورشة والوظائف قيد الإعداد',
+        style: TextStyle(fontSize: 16, color: Colors.grey),
+      ),
     );
   }
 }

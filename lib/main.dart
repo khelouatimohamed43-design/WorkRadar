@@ -26,7 +26,7 @@ class RadarHomeScreen extends StatelessWidget {
   const RadarHomeScreen({super.key});
 
   @override
-  Widget build(BuildContext5 context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('WorkRadar - رادار الوظائف'),

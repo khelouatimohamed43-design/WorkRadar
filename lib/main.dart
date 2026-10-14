@@ -53,11 +53,36 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
     },
   ];
 
+  final List<Map<String, String>> _storeItems = [
+    {
+      'title': 'موسوعة القطط - الجزء الأول',
+      'type': 'كتاب إلكتروني (PDF)',
+      'price': '\$9.99',
+      'downloads': '42 تحميل',
+    },
+    {
+      'title': 'حزمة تصاميم Refine Yourself',
+      'type': 'ملفات جرافيك عالية الدقة',
+      'price': '\$14.99',
+      'downloads': '18 تحميل',
+    },
+    {
+      'title': 'قالب إدارة العمل الحر',
+      'type': 'قالب جاهز',
+      'price': '\$5.00',
+      'downloads': '65 تحميل',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
+    String titleText = 'رادار الوظائف';
+    if (_selectedIndex == 1) titleText = 'ورشة العمل والإدارة';
+    if (_selectedIndex == 2) titleText = 'المتجر الرقمي';
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectedIndex == 0 ? 'رادار الوظائف' : 'ورشة العمل والإدارة'),
+        title: Text(titleText),
         centerTitle: true,
         backgroundColor: Colors.deepPurple,
         actions: [
@@ -71,10 +96,11 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
           ),
         ],
       ),
-      body: _selectedIndex == 0 ? _buildRadarTab() : _buildWorkshopTab(),
+      body: _buildCurrentScreen(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.deepPurpleAccent,
+        unselectedItemColor: Colors.grey,
         onTap: (index) {
           setState(() {
             _selectedIndex = index;
@@ -89,9 +115,26 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
             icon: Icon(Icons.build_circle_outlined),
             label: 'الورشة',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.storefront),
+            label: 'المتجر',
+          ),
         ],
       ),
     );
+  }
+
+  Widget _buildCurrentScreen() {
+    switch (_selectedIndex) {
+      case 0:
+        return _buildRadarTab();
+      case 1:
+        return _buildWorkshopTab();
+      case 2:
+        return _buildStoreTab();
+      default:
+        return _buildRadarTab();
+    }
   }
 
   // تبويب رادار الفرص
@@ -133,7 +176,6 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // كارت الإحصائيات السريعة
           Card(
             color: Colors.deepPurple.withOpacity(0.2),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -155,7 +197,6 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          // أدوات العمل
           ListTile(
             leading: const Icon(Icons.description, color: Colors.deepPurpleAccent),
             title: const Text('مولد عروض العمل (Proposal Generator)'),
@@ -183,9 +224,54 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
       ),
     );
   }
+
+  // تبويب المتجر الرقمي
+  Widget _buildStoreTab() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(12.0),
+      itemCount: _storeItems.length,
+      itemBuilder: (context, index) {
+        final item = _storeItems[index];
+        return Card(
+          elevation: 3,
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.deepPurple.shade700,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.shopping_bag, color: Colors.white),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item['title']!, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      const SizedBox(height: 4),
+                      Text('${item['type']} • ${item['downloads']}', style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                    ],
+                  ),
+                ),
+                Text(
+                  item['price']!,
+                  style: const TextStyle(color: Colors.amberAccent, fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
-// ويدجت فرعي لعرض الإحصائيات
 class _StatItem extends StatelessWidget {
   final String title;
   final String value;

@@ -74,11 +74,15 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
     },
   ];
 
+  final TextEditingController _jobDescriptionController = TextEditingController();
+  String _generatedProposal = '';
+
   @override
   Widget build(BuildContext context) {
     String titleText = 'رادار الوظائف';
     if (_selectedIndex == 1) titleText = 'ورشة العمل والإدارة';
     if (_selectedIndex == 2) titleText = 'المتجر الرقمي';
+    if (_selectedIndex == 3) titleText = 'التواصل الذكي (AI)';
 
     return Scaffold(
       appBar: AppBar(
@@ -101,6 +105,7 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.deepPurpleAccent,
         unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
         onTap: (index) {
           setState(() {
             _selectedIndex = index;
@@ -119,6 +124,10 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
             icon: Icon(Icons.storefront),
             label: 'المتجر',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.psychology),
+            label: 'مساعد AI',
+          ),
         ],
       ),
     );
@@ -132,6 +141,8 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
         return _buildWorkshopTab();
       case 2:
         return _buildStoreTab();
+      case 3:
+        return _buildAiAssistantTab();
       default:
         return _buildRadarTab();
     }
@@ -169,7 +180,7 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
     );
   }
 
-  // تبويب الورشة ومتابعة المشاريع والمهام
+  // تبويب الورشة
   Widget _buildWorkshopTab() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -202,7 +213,11 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
             title: const Text('مولد عروض العمل (Proposal Generator)'),
             subtitle: const Text('إنشاء نماذج تقديم احترافية للعملاء'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                _selectedIndex = 3;
+              });
+            },
           ),
           const Divider(),
           ListTile(
@@ -268,6 +283,78 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
           ),
         );
       },
+    );
+  }
+
+  // تبويب مساعد الذكاء الاصطناعي لتوليد العروض
+  Widget _buildAiAssistantTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'مولد العروض الذكي (AI Proposal Builder)',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'أدخل تفاصيل الوظيفة أو وصف المشروع وسيتم كتابة عرض مخصص وجذاب للعميل تلقائياً:',
+            style: TextStyle(color: Colors.grey, fontSize: 13),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _jobDescriptionController,
+            maxLines: 4,
+            decoration: InputDecoration(
+              hintText: 'مثال: مطلوب مصمم لإنشاء هوية بصرية كاملة لمشروع ناشئ...',
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              filled: true,
+              fillColor: Colors.grey.shade900,
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurpleAccent,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              icon: const Icon(Icons.auto_awesome, color: Colors.white),
+              label: const Text('توليد العرض الاحترافي', style: TextStyle(fontSize: 16, color: Colors.white)),
+              onPressed: () {
+                if (_jobDescriptionController.text.isNotEmpty) {
+                  setState(() {
+                    _generatedProposal = 'مرحباً بك عزيزي العميل،\n\nقرأت تفاصيل مشروعك بخصوص (${_jobDescriptionController.text.trim()})، ويسعدني جداً العمل معكم. أملك خبرة ممتازة في هذا المجال وسأضمن لك جودة عالية وتسليماً في الوقت المحدد.\n\nيمكنك الاطلاع على أعمالي السابقة ويسعدني مناقشة التفاصيل البدائية معكم لتنفيذ الطلب بالصورة المثالية.';
+                  });
+                }
+              },
+            ),
+          ),
+          if (_generatedProposal.isNotEmpty) ...[
+            const SizedBox(height: 20),
+            const Text(
+              'العرض المقترح:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.greenAccent),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: Colors.deepPurple.withOpacity(0.15),
+                border: Border.all(color: Colors.deepPurpleAccent.withOpacity(0.5)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: SelectableText(
+                _generatedProposal,
+                style: const TextStyle(fontSize: 14, height: 1.4),
+              ),
+            ),
+          ]
+        ],
+      ),
     );
   }
 }

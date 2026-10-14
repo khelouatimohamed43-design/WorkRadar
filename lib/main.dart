@@ -217,62 +217,64 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
           const Text('🧮 حاسبة أرباح وتسعير المشاريع الحية', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent)),
           const SizedBox(height: 10),
           Card(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('ساعات العمل المتوقعة: ${_hours.toInt()} ساعة'),
-                    Text('\$${(_hours * _ratePerHour).toInt()}', style: const TextStyle(color: Colors.grey)),
-                  ],
-                ),
-                Slider(
-                  value: _hours,
-                  min: 1,
-                  max: 50,
-                  divisions: 49,
-                  activeColor: Colors.deepPurpleAccent,
-                  onChanged: (v) => setState(() => _hours = v),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('سعر ساعتك: \$${_ratePerHour.toInt()} /ساعة'),
-                  ],
-                ),
-                Slider(
-                  value: _ratePerHour,
-                  min: 5,
-                  max: 100,
-                  divisions: 19,
-                  activeColor: Colors.greenAccent,
-                  onChanged: (v) => setState(() => _ratePerHour = v),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('هامش الربح الإضافي: ${_profitMargin.toInt()}%'),
-                    Text('+\$${profitAmount.toStringAsFixed(1)}', style: const TextStyle(color: Colors.greenAccent)),
-                  ],
-                ),
-                Slider(
-                  value: _profitMargin,
-                  min: 0,
-                  max: 50,
-                  divisions: 10,
-                  activeColor: Colors.amberAccent,
-                  onChanged: (v) => setState(() => _profitMargin = v),
-                ),
-                const Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('المبلغ الإجمالي المقترح للعميل:', style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text('\$${finalPrice.toStringAsFixed(2)}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.amberAccent)),
-                  ],
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('ساعات العمل المتوقعة: ${_hours.toInt()} ساعة'),
+                      Text('\$${(_hours * _ratePerHour).toInt()}', style: const TextStyle(color: Colors.grey)),
+                    ],
+                  ),
+                  Slider(
+                    value: _hours,
+                    min: 1,
+                    max: 50,
+                    divisions: 49,
+                    activeColor: Colors.deepPurpleAccent,
+                    onChanged: (v) => setState(() => _hours = v),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('سعر ساعتك: \$${_ratePerHour.toInt()} /ساعة'),
+                    ],
+                  ),
+                  Slider(
+                    value: _ratePerHour,
+                    min: 5,
+                    max: 100,
+                    divisions: 19,
+                    activeColor: Colors.greenAccent,
+                    onChanged: (v) => setState(() => _ratePerHour = v),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('هامش الربح الإضافي: ${_profitMargin.toInt()}%'),
+                      Text('+\$${profitAmount.toStringAsFixed(1)}', style: const TextStyle(color: Colors.greenAccent)),
+                    ],
+                  ),
+                  Slider(
+                    value: _profitMargin,
+                    min: 0,
+                    max: 50,
+                    divisions: 10,
+                    activeColor: Colors.amberAccent,
+                    onChanged: (v) => setState(() => _profitMargin = v),
+                  ),
+                  const Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('المبلغ الإجمالي المقترح للعميل:', style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text('\$${finalPrice.toStringAsFixed(2)}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.amberAccent)),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -381,7 +383,7 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
     );
   }
 
-  // --- 4. مولد العروض التفاعلي بذكاء تحليلي ---
+  // --- 4. مولد العروض التفاعلي ---
   Widget _buildAiProposalTab() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -455,17 +457,17 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
     if (_jobDescController.text.trim().isEmpty) return;
 
     setState(() => _isGenerating = true);
-    await Future.delayed(const Duration(milliseconds: 800)); // محاكاة معالجة سرعة السيرفر
+    await Future.delayed(const Duration(milliseconds: 800));
 
     String text = _jobDescController.text.trim();
     String generated = 'مرحباً عزيزي العميل،\n\n'
         'لقد اطلعت بعناية على تفاصيل مشروعك بخصوص ($text).\n\n'
-        'بصفتي مستقلاً متأكداً من متطلبات هذا العمل، أضمن لك تنفيذ المخرجات بأعلى معايير الدقة الاحترافية وبأنسب جدول زمني ممكن.\n\n'
+        'بصفتي مستقلاً ومتخصصاً في تنفيذ هذا النوع من الأعمال، أضمن لك تنفيذ المخرجات بأعلى معايير الدقة الاحترافية وبأنسب جدول زمني ممكن.\n\n'
         'خطوات العمل المقترحة:\n'
-        '1. تحليلي الشامل للمتطلبات وتنفيذ عينة مبدئية للمعاينة.\n'
-        '2. إجراء التعديلات بناءً على ملاحظاتكم حتى نصل للنتيجة المثالية.\n'
-        '3. تسليم كافة الملفات النهائية والمصدرية.\n\n'
-        'أنا جاهز للبدء فوراً ومناقشة أية تفاصيل إضافية معكم!';
+        '1. التحليل الشامل للمتطلبات وتنفيذ مسودة حية للمعاينة.\n'
+        '2. إدخال أي تعديلات فورية بناءً على رؤيتك.\n'
+        '3. تسليم الملفات النهائية كاملة وبجودة عالية.\n\n'
+        'أنا جاهز للبدء فوراً ومناقشة أية تفاصيل مع سيادتكم!';
 
     setState(() {
       _generatedProposal = generated;

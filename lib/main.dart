@@ -83,6 +83,7 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
     if (_selectedIndex == 1) titleText = 'ورشة العمل والإدارة';
     if (_selectedIndex == 2) titleText = 'المتجر الرقمي';
     if (_selectedIndex == 3) titleText = 'التواصل الذكي (AI)';
+    if (_selectedIndex == 4) titleText = 'الملف الشخصي';
 
     return Scaffold(
       appBar: AppBar(
@@ -128,6 +129,10 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
             icon: Icon(Icons.psychology),
             label: 'مساعد AI',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            label: 'حسابي',
+          ),
         ],
       ),
     );
@@ -143,6 +148,8 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
         return _buildStoreTab();
       case 3:
         return _buildAiAssistantTab();
+      case 4:
+        return _buildProfileTab();
       default:
         return _buildRadarTab();
     }
@@ -355,6 +362,94 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
           ]
         ],
       ),
+    );
+  }
+
+  // تبويب الملف الشخصي والإعدادات
+  Widget _buildProfileTab() {
+    return ListView(
+      padding: const EdgeInsets.all(16.0),
+      children: [
+        const Center(
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 45,
+                backgroundColor: Colors.deepPurple,
+                child: Icon(Icons.person, size: 50, color: Colors.white),
+              ),
+              SizedBox(height: 12),
+              Text(
+                'Mohamed - WorkRadar Freelancer',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 4),
+              Text(
+                'مستقل ومصمم رقمي محترف',
+                style: TextStyle(color: Colors.grey, fontSize: 13),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+        const Text(
+          'إعدادات الحساب والتطبيق',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
+        ),
+        const SizedBox(height: 8),
+        Card(
+          child: Column(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.notifications_active_outlined),
+                title: const Text('تنبيهات الوظائف الفورية'),
+                trailing: Switch(
+                  value: true,
+                  activeColor: Colors.deepPurpleAccent,
+                  onChanged: (val) {},
+                ),
+              ),
+              const Divider(height: 1),
+              ListTile(
+                leading: const Icon(Icons.dark_mode_outlined),
+                title: const Text('الوضع الداكن (Dark Theme)'),
+                trailing: Switch(
+                  value: true,
+                  activeColor: Colors.deepPurpleAccent,
+                  onChanged: (val) {},
+                ),
+              ),
+              const Divider(height: 1),
+              ListTile(
+                leading: const Icon(Icons.language),
+                title: const Text('لغة التطبيق'),
+                trailing: const Text('العربية', style: TextStyle(color: Colors.grey)),
+                onTap: () {},
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          child: Column(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.info_outline, color: Colors.blueAccent),
+                title: const Text('حول التطبيق'),
+                subtitle: const Text('WorkRadar v3.2 - النسخة النهائية'),
+                onTap: () {},
+              ),
+              const Divider(height: 1),
+              ListTile(
+                leading: const Icon(Icons.cloud_sync, color: Colors.greenAccent),
+                title: const Text('مزامنة التحديثات الآلية (GitHub)'),
+                subtitle: const Text('متصل ومفعل تلقائياً'),
+                onTap: () {},
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

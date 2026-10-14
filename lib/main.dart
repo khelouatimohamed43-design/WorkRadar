@@ -57,7 +57,7 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('رادار الوظائف - WorkRadar'),
+        title: Text(_selectedIndex == 0 ? 'رادار الوظائف' : 'ورشة العمل والإدارة'),
         centerTitle: true,
         backgroundColor: Colors.deepPurple,
         actions: [
@@ -71,7 +71,7 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
           ),
         ],
       ),
-      body: _selectedIndex == 0 ? _buildRadarTab() : _buildJobsTab(),
+      body: _selectedIndex == 0 ? _buildRadarTab() : _buildWorkshopTab(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.deepPurpleAccent,
@@ -86,7 +86,7 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
             label: 'الرادار',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.work_outline),
+            icon: Icon(Icons.build_circle_outlined),
             label: 'الورشة',
           ),
         ],
@@ -94,6 +94,7 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
     );
   }
 
+  // تبويب رادار الفرص
   Widget _buildRadarTab() {
     return ListView.builder(
       padding: const EdgeInsets.all(12.0),
@@ -125,12 +126,86 @@ class _RadarHomeScreenState extends State<RadarHomeScreen> {
     );
   }
 
-  Widget _buildJobsTab() {
-    return const Center(
-      child: Text(
-        'قسم الورشة والوظائف قيد الإعداد',
-        style: TextStyle(fontSize: 16, color: Colors.grey),
+  // تبويب الورشة ومتابعة المشاريع والمهام
+  Widget _buildWorkshopTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // كارت الإحصائيات السريعة
+          Card(
+            color: Colors.deepPurple.withOpacity(0.2),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _StatItem(title: 'المشاريع النشطة', value: '3'),
+                  _StatItem(title: 'عروض قيد الانتظار', value: '7'),
+                  _StatItem(title: 'المكتملة هذا الشهر', value: '12'),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'أدوات الورشة والإنتاجية',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          // أدوات العمل
+          ListTile(
+            leading: const Icon(Icons.description, color: Colors.deepPurpleAccent),
+            title: const Text('مولد عروض العمل (Proposal Generator)'),
+            subtitle: const Text('إنشاء نماذج تقديم احترافية للعملاء'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.attach_money, color: Colors.greenAccent),
+            title: const Text('حاسبة تسعير الخدمات'),
+            subtitle: const Text('تقدير قيمة المشاريع والساعات'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.check_box_outlined, color: Colors.orangeAccent),
+            title: const Text('قائمة مهام المشاريع (To-Do List)'),
+            subtitle: const Text('تنظيم وتسليم الأعمال في موعدها'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {},
+          ),
+        ],
       ),
+    );
+  }
+}
+
+// ويدجت فرعي لعرض الإحصائيات
+class _StatItem extends StatelessWidget {
+  final String title;
+  final String value;
+
+  const _StatItem({required this.title, required this.value, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          title,
+          style: const TextStyle(fontSize: 11, color: Colors.grey),
+        ),
+      ],
     );
   }
 }
